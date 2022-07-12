@@ -12,11 +12,11 @@ import static com.gabrielspassos.poc.config.BowlingConfig.LAST_ROUND;
 import static org.apache.commons.lang3.BooleanUtils.isTrue;
 
 @Service
-public class PlaysService {
+public class FrameService {
 
-    public Map<Integer, List<PlayDTO>> mapPlaysToRounds(List<PlayOutput> playOutputs) {
-        Map<Integer, List<PlayDTO>> rounds = new HashMap<>();
-        Integer round = 1;
+    public Map<Integer, List<PlayDTO>> mapPlaysToFrames(List<PlayOutput> playOutputs) {
+        Map<Integer, List<PlayDTO>> frames = new HashMap<>();
+        Integer frame = 1;
         List<PlayDTO> plays = new ArrayList<>();
 
         for (int i = 0; i < playOutputs.size(); i++) {
@@ -25,13 +25,13 @@ public class PlaysService {
                 continue;
             }
 
-            boolean isLastRound = LAST_ROUND.equals(round);
-            if (isLastRound) {
+            boolean isLastFrame = LAST_ROUND.equals(frame);
+            if (isLastFrame) {
                 PlayOutput secondPlay = playOutputs.get(i + 1);
                 PlayOutput thirdPlay = playOutputs.get(i + 2);
                 PlayDTO play = processPlay(currentPlay, secondPlay, thirdPlay);
                 plays.add(play);
-                enhanceRoundsWithPlays(rounds, round, playOutputs, plays);
+                enhanceFramesWithPlays(frames, frame, playOutputs, plays);
             }
 
             PlayOutput nextPlay = playOutputs.get(i + 1);
@@ -41,14 +41,14 @@ public class PlaysService {
 
             PlayDTO play = processPlay(currentPlay, nextPlay);
             plays.add(play);
-            boolean isRoundComplete = enhanceRoundsWithPlays(rounds, round, playOutputs, plays);
-            if (isRoundComplete) {
-                round++;
+            boolean isFrameComplete = enhanceFramesWithPlays(frames, frame, playOutputs, plays);
+            if (isFrameComplete) {
+                frame++;
                 plays = new ArrayList<>();
             }
         }
 
-        return rounds;
+        return frames;
     }
 
     private PlayDTO processPlay(PlayOutput playOutput) {
@@ -87,20 +87,20 @@ public class PlaysService {
         }
     }
 
-    private Boolean enhanceRoundsWithPlays(Map<Integer, List<PlayDTO>> rounds,
-                                           Integer round,
+    private Boolean enhanceFramesWithPlays(Map<Integer, List<PlayDTO>> frames,
+                                           Integer frame,
                                            List<? extends PlayOutput> playOutputs,
                                            List<PlayDTO> plays) {
-        Boolean isRoundComplete = isRoundComplete(playOutputs, plays);
+        Boolean isFrameComplete = isFrameComplete(playOutputs, plays);
 
-        if (isRoundComplete) {
-            rounds.put(round, plays);
+        if (isFrameComplete) {
+            frames.put(frame, plays);
         }
 
-        return isRoundComplete;
+        return isFrameComplete;
     }
 
-    private Boolean isRoundComplete(List<? extends PlayOutput> playOutputs, List<PlayDTO> plays) {
+    private Boolean isFrameComplete(List<? extends PlayOutput> playOutputs, List<PlayDTO> plays) {
         List<String> playersNames = playOutputs.stream()
                 .map(PlayOutput::getPlayerName)
                 .distinct()

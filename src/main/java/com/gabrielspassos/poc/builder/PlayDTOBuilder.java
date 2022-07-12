@@ -3,8 +3,6 @@ package com.gabrielspassos.poc.builder;
 import com.gabrielspassos.poc.dto.PlayDTO;
 import com.gabrielspassos.poc.dto.output.PlayOutput;
 
-import java.util.stream.IntStream;
-
 public class PlayDTOBuilder {
 
     public static PlayDTO build(PlayOutput currentPlay) {
@@ -14,20 +12,19 @@ public class PlayDTOBuilder {
                 .firstScore(firstScore)
                 .secondScore(null)
                 .thirdScore(null)
-                .finalScore(firstScore)
+                .finalScore(null)
                 .build();
     }
 
     public static PlayDTO build(PlayOutput currentPlay, PlayOutput nextPlay) {
         Integer firstScore = currentPlay.getPlayerScore();
         Integer secondScore = nextPlay.getPlayerScore();
-        Integer finalScore = Integer.sum(firstScore, secondScore);
         return PlayDTO.builder()
                 .playerName(currentPlay.getPlayerName())
                 .firstScore(firstScore)
                 .secondScore(secondScore)
                 .thirdScore(null)
-                .finalScore(finalScore)
+                .finalScore(null)
                 .build();
     }
 
@@ -35,14 +32,13 @@ public class PlayDTOBuilder {
         Integer firstScore = firstPlay.getPlayerScore();
         Integer secondScore = secondPlay.getPlayerScore();
         Integer thirdScore = thirdPlay.getPlayerScore();
-        Integer finalScore = IntStream.of(firstScore, secondScore, thirdScore).sum();
 
         return PlayDTO.builder()
                 .playerName(firstPlay.getPlayerName())
                 .firstScore(firstScore)
                 .secondScore(secondScore)
                 .thirdScore(thirdScore)
-                .finalScore(finalScore)
+                .finalScore(null)
                 .build();
     }
 }
