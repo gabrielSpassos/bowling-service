@@ -23,4 +23,6 @@ public class PlayOutput {
     @Max(value = 10, message = "The maximum score is 10")
     private Integer playerScore;
 
+    private Boolean isProcessed;
+
 }

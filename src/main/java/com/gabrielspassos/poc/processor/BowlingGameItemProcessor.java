@@ -9,9 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
-
-import javax.validation.Validator;
+import org.springframework.stereotype.Component;
 
 import static com.gabrielspassos.poc.config.BowlingConfig.FAULT_SCORE_VALUE;
 import static com.gabrielspassos.poc.config.BowlingConfig.FAULT_SYMBOL;
@@ -19,7 +17,7 @@ import static com.gabrielspassos.poc.config.BowlingConfig.FAULT_SYMBOL;
 @Slf4j
 @Qualifier("bowlingGameItemProcessor")
 @StepScope
-@Service
+@Component
 @AllArgsConstructor
 public class BowlingGameItemProcessor implements ItemProcessor<PlayInput, PlayOutput> {
 
