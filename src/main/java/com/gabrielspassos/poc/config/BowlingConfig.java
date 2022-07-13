@@ -12,5 +12,5 @@ public class BowlingConfig {
     public static final Integer FAULT_SCORE_VALUE = 0;
     public static final Integer MIN_SCORE_VALUE = 0;
     public static final Integer MAX_SCORE_VALUE = 10;
-    public static final Integer LAST_ROUND = 10;
+    public static final Integer LAST_FRAME = 10;
 }

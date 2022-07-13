@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.gabrielspassos.poc.config.BowlingConfig.LAST_ROUND;
+import static com.gabrielspassos.poc.config.BowlingConfig.LAST_FRAME;
 import static org.apache.commons.lang3.BooleanUtils.isTrue;
 
 @Service
@@ -25,7 +25,7 @@ public class FrameService {
                 continue;
             }
 
-            boolean isLastFrame = LAST_ROUND.equals(frame);
+            boolean isLastFrame = LAST_FRAME.equals(frame);
             if (isLastFrame) {
                 PlayOutput secondPlay = playOutputs.get(i + 1);
                 PlayOutput thirdPlay = playOutputs.get(i + 2);
