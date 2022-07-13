@@ -11,8 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class FrameServiceTest {
@@ -64,6 +63,35 @@ class FrameServiceTest {
 
         assertNotNull(frames);
         assertEquals(10, frames.size());
+        boolean isAllFramesWithOnlyTwoFrames = frames.values()
+                .stream()
+                .allMatch(frameDTOS -> frameDTOS.size() == 2);
+        assertTrue(isAllFramesWithOnlyTwoFrames);
+    }
+
+    @Test
+    void shouldMapPerfectPlaysToFrame() {
+        List<PlayOutput> plays = List.of(
+                PlayOutputStub.create("Jeff", 10, null),
+                PlayOutputStub.create("Jeff", 10, null),
+                PlayOutputStub.create("Jeff", 10, null),
+                PlayOutputStub.create("Jeff", 10, null),
+                PlayOutputStub.create("Jeff", 10, null),
+                PlayOutputStub.create("Jeff", 10, null),
+                PlayOutputStub.create("Jeff", 10, null),
+                PlayOutputStub.create("Jeff", 10, null),
+                PlayOutputStub.create("Jeff", 10, null),
+                PlayOutputStub.create("Jeff", 10, null)
+        );
+
+        Map<Integer, List<FrameDTO>> frames = frameService.mapPlaysToFrames(plays);
+
+        assertNotNull(frames);
+        assertEquals(10, frames.size());
+        boolean isAllFramesWithOnlyOneFrame = frames.values()
+                .stream()
+                .allMatch(frameDTOS -> frameDTOS.size() == 1);
+        assertTrue(isAllFramesWithOnlyOneFrame);
     }
 
 }

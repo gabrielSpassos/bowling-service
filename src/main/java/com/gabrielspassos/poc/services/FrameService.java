@@ -20,21 +20,22 @@ public class FrameService {
         List<FrameDTO> plays = new ArrayList<>();
 
         for (int i = 0; i < playOutputs.size(); i++) {
-            PlayOutput currentPlay = playOutputs.get(i);
+            PlayOutput currentPlay = getPlayByIndexIfExits(playOutputs, i);
             if (isTrue(currentPlay.getIsProcessed())) {
                 continue;
             }
 
             boolean isLastFrame = LAST_FRAME.equals(frame);
             if (isLastFrame) {
-                PlayOutput secondPlay = playOutputs.get(i + 1);
-                PlayOutput thirdPlay = playOutputs.get(i + 2);
+                PlayOutput secondPlay = getPlayByIndexIfExits(playOutputs, i + 1);
+                PlayOutput thirdPlay = getPlayByIndexIfExits(playOutputs, i + 2);
                 FrameDTO play = processPlay(currentPlay, secondPlay, thirdPlay);
                 plays.add(play);
                 enhanceFramesWithPlays(frames, frame, playOutputs, plays);
+                continue;
             }
 
-            PlayOutput nextPlay = playOutputs.get(i + 1);
+            PlayOutput nextPlay = getPlayByIndexIfExits(playOutputs, i + 1);
             if (isTrue(nextPlay.getIsProcessed())) {
                 continue;
             }
@@ -52,20 +53,21 @@ public class FrameService {
     }
 
     private FrameDTO processPlay(PlayOutput playOutput) {
-        FrameDTO play = FrameDTOBuilder.build(playOutput);
+        FrameDTO frame = FrameDTOBuilder.build(playOutput);
         updatePlay(playOutput);
-        return play;
+        return frame;
     }
 
     private FrameDTO processPlay(PlayOutput firstPlay, PlayOutput secondPlay) {
         String firstPlayPlayer = firstPlay.getPlayerName();
         String secondPlayPlayer = secondPlay.getPlayerName();
+        FrameDTO firstFrame = FrameDTOBuilder.build(firstPlay);
 
-        if (firstPlayPlayer.equals(secondPlayPlayer)) {
-            FrameDTO play = FrameDTOBuilder.build(firstPlay, secondPlay);
+        if (firstPlayPlayer.equals(secondPlayPlayer) && !firstFrame.isStrikeFrame()) {
+            FrameDTO frame = FrameDTOBuilder.build(firstPlay, secondPlay);
             updatePlay(firstPlay);
             updatePlay(secondPlay);
-            return play;
+            return frame;
         } else {
             return processPlay(firstPlay);
         }
@@ -77,11 +79,11 @@ public class FrameService {
         String thirdPlayPlayer = thirdPlay.getPlayerName();
 
         if (firstPlayPlayer.equals(secondPlayPlayer) && secondPlayPlayer.equals(thirdPlayPlayer)) {
-            FrameDTO play = FrameDTOBuilder.build(firstPlay, secondPlay, thirdPlay);
+            FrameDTO frame = FrameDTOBuilder.build(firstPlay, secondPlay, thirdPlay);
             updatePlay(firstPlay);
             updatePlay(secondPlay);
             updatePlay(thirdPlay);
-            return play;
+            return frame;
         } else {
             return processPlay(firstPlay, secondPlay);
         }
@@ -112,5 +114,15 @@ public class FrameService {
 
     private void updatePlay(PlayOutput playOutput) {
         playOutput.setIsProcessed(Boolean.TRUE);
+    }
+
+    private PlayOutput getPlayByIndexIfExits(List<PlayOutput> plays, Integer index) {
+        int lastIndex = plays.size();
+
+        if (index >= lastIndex) {
+            return new PlayOutput();
+        }
+
+        return plays.get(index);
     }
 }
