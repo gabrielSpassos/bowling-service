@@ -3,9 +3,11 @@ package com.gabrielspassos.poc.services;
 import com.gabrielspassos.poc.dto.FrameDTO;
 import com.gabrielspassos.poc.dto.output.PlayOutput;
 import com.gabrielspassos.poc.stub.PlayOutputStub;
+import com.gabrielspassos.poc.validator.FrameValidator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
@@ -18,6 +20,9 @@ class FrameServiceTest {
 
     @InjectMocks
     private FrameService frameService;
+
+    @Mock
+    private FrameValidator frameValidator;
 
     @Test
     void shouldMapPlaysToFrame() {

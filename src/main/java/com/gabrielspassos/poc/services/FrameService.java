@@ -3,6 +3,8 @@ package com.gabrielspassos.poc.services;
 import com.gabrielspassos.poc.builder.FrameDTOBuilder;
 import com.gabrielspassos.poc.dto.FrameDTO;
 import com.gabrielspassos.poc.dto.output.PlayOutput;
+import com.gabrielspassos.poc.validator.FrameValidator;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -12,7 +14,10 @@ import static com.gabrielspassos.poc.config.BowlingConfig.LAST_FRAME;
 import static org.apache.commons.lang3.BooleanUtils.isTrue;
 
 @Service
+@AllArgsConstructor
 public class FrameService {
+
+    private FrameValidator frameValidator;
 
     public Map<Integer, List<FrameDTO>> mapPlaysToFrames(List<PlayOutput> playOutputs) {
         Map<Integer, List<FrameDTO>> frames = new HashMap<>();
@@ -48,6 +53,8 @@ public class FrameService {
                 plays = new ArrayList<>();
             }
         }
+
+        frameValidator.validate(frames);
 
         return frames;
     }
