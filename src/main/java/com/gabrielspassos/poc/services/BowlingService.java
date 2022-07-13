@@ -87,10 +87,6 @@ public class BowlingService {
                 .collect(Collectors.toList());
     }
 
-    private Predicate<FrameDTO> isSpare() {
-        return FrameDTO::isSpareFrame;
-    }
-
     private Predicate<FrameDTO> playerIsNotAtList(List<FrameDTO> frames) {
         return frame -> frames.stream().noneMatch(frameDTO -> frame.getPlayerName().equals(frameDTO.getPlayerName()));
     }

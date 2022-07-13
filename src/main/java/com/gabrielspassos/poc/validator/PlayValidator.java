@@ -1,4 +1,4 @@
-package com.gabrielspassos.poc.config;
+package com.gabrielspassos.poc.validator;
 
 import com.gabrielspassos.poc.dto.output.PlayOutput;
 import org.apache.commons.lang3.StringUtils;

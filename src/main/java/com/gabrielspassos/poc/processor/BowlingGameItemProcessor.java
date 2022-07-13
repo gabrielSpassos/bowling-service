@@ -1,6 +1,6 @@
 package com.gabrielspassos.poc.processor;
 
-import com.gabrielspassos.poc.config.PlayValidator;
+import com.gabrielspassos.poc.validator.PlayValidator;
 import com.gabrielspassos.poc.dto.input.PlayInput;
 import com.gabrielspassos.poc.dto.output.PlayOutput;
 import lombok.AllArgsConstructor;
