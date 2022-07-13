@@ -1,13 +1,13 @@
 package com.gabrielspassos.poc.builder;
 
-import com.gabrielspassos.poc.dto.PlayDTO;
+import com.gabrielspassos.poc.dto.FrameDTO;
 import com.gabrielspassos.poc.dto.output.PlayOutput;
 
-public class PlayDTOBuilder {
+public class FrameDTOBuilder {
 
-    public static PlayDTO build(PlayOutput currentPlay) {
+    public static FrameDTO build(PlayOutput currentPlay) {
         Integer firstScore = currentPlay.getPlayerScore();
-        return PlayDTO.builder()
+        return FrameDTO.builder()
                 .playerName(currentPlay.getPlayerName())
                 .firstScore(firstScore)
                 .secondScore(null)
@@ -16,10 +16,10 @@ public class PlayDTOBuilder {
                 .build();
     }
 
-    public static PlayDTO build(PlayOutput currentPlay, PlayOutput nextPlay) {
+    public static FrameDTO build(PlayOutput currentPlay, PlayOutput nextPlay) {
         Integer firstScore = currentPlay.getPlayerScore();
         Integer secondScore = nextPlay.getPlayerScore();
-        return PlayDTO.builder()
+        return FrameDTO.builder()
                 .playerName(currentPlay.getPlayerName())
                 .firstScore(firstScore)
                 .secondScore(secondScore)
@@ -28,12 +28,12 @@ public class PlayDTOBuilder {
                 .build();
     }
 
-    public static PlayDTO build(PlayOutput firstPlay, PlayOutput secondPlay, PlayOutput thirdPlay) {
+    public static FrameDTO build(PlayOutput firstPlay, PlayOutput secondPlay, PlayOutput thirdPlay) {
         Integer firstScore = firstPlay.getPlayerScore();
         Integer secondScore = secondPlay.getPlayerScore();
         Integer thirdScore = thirdPlay.getPlayerScore();
 
-        return PlayDTO.builder()
+        return FrameDTO.builder()
                 .playerName(firstPlay.getPlayerName())
                 .firstScore(firstScore)
                 .secondScore(secondScore)

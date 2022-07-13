@@ -1,7 +1,8 @@
 package com.gabrielspassos.poc.writer;
 
-import com.gabrielspassos.poc.dto.PlayDTO;
+import com.gabrielspassos.poc.dto.FrameDTO;
 import com.gabrielspassos.poc.dto.output.PlayOutput;
+import com.gabrielspassos.poc.services.BowlingService;
 import com.gabrielspassos.poc.services.FrameService;
 import lombok.AllArgsConstructor;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -19,12 +20,14 @@ import java.util.Map;
 public class BowlingGameFileWriter implements ItemWriter<PlayOutput> {
 
     private FrameService frameService;
+    private BowlingService bowlingService;
 
     @Override
     public void write(List<? extends PlayOutput> playOutputs) {
-        Map<Integer, List<PlayDTO>> rounds = frameService.mapPlaysToFrames((List<PlayOutput>) playOutputs);
-        System.out.println(rounds);
-
-
+        Map<Integer, List<FrameDTO>> frames = frameService.mapPlaysToFrames((List<PlayOutput>) playOutputs);
+        System.out.println(frames);
+        bowlingService.calculateFramesScore(frames);
+        System.out.println("Calculated");
+        System.out.println(frames);
     }
 }

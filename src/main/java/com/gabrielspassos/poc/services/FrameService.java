@@ -1,7 +1,7 @@
 package com.gabrielspassos.poc.services;
 
-import com.gabrielspassos.poc.builder.PlayDTOBuilder;
-import com.gabrielspassos.poc.dto.PlayDTO;
+import com.gabrielspassos.poc.builder.FrameDTOBuilder;
+import com.gabrielspassos.poc.dto.FrameDTO;
 import com.gabrielspassos.poc.dto.output.PlayOutput;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +14,10 @@ import static org.apache.commons.lang3.BooleanUtils.isTrue;
 @Service
 public class FrameService {
 
-    public Map<Integer, List<PlayDTO>> mapPlaysToFrames(List<PlayOutput> playOutputs) {
-        Map<Integer, List<PlayDTO>> frames = new HashMap<>();
+    public Map<Integer, List<FrameDTO>> mapPlaysToFrames(List<PlayOutput> playOutputs) {
+        Map<Integer, List<FrameDTO>> frames = new HashMap<>();
         Integer frame = 1;
-        List<PlayDTO> plays = new ArrayList<>();
+        List<FrameDTO> plays = new ArrayList<>();
 
         for (int i = 0; i < playOutputs.size(); i++) {
             PlayOutput currentPlay = playOutputs.get(i);
@@ -29,7 +29,7 @@ public class FrameService {
             if (isLastFrame) {
                 PlayOutput secondPlay = playOutputs.get(i + 1);
                 PlayOutput thirdPlay = playOutputs.get(i + 2);
-                PlayDTO play = processPlay(currentPlay, secondPlay, thirdPlay);
+                FrameDTO play = processPlay(currentPlay, secondPlay, thirdPlay);
                 plays.add(play);
                 enhanceFramesWithPlays(frames, frame, playOutputs, plays);
             }
@@ -39,7 +39,7 @@ public class FrameService {
                 continue;
             }
 
-            PlayDTO play = processPlay(currentPlay, nextPlay);
+            FrameDTO play = processPlay(currentPlay, nextPlay);
             plays.add(play);
             boolean isFrameComplete = enhanceFramesWithPlays(frames, frame, playOutputs, plays);
             if (isFrameComplete) {
@@ -51,18 +51,18 @@ public class FrameService {
         return frames;
     }
 
-    private PlayDTO processPlay(PlayOutput playOutput) {
-        PlayDTO play = PlayDTOBuilder.build(playOutput);
+    private FrameDTO processPlay(PlayOutput playOutput) {
+        FrameDTO play = FrameDTOBuilder.build(playOutput);
         updatePlay(playOutput);
         return play;
     }
 
-    private PlayDTO processPlay(PlayOutput firstPlay, PlayOutput secondPlay) {
+    private FrameDTO processPlay(PlayOutput firstPlay, PlayOutput secondPlay) {
         String firstPlayPlayer = firstPlay.getPlayerName();
         String secondPlayPlayer = secondPlay.getPlayerName();
 
         if (firstPlayPlayer.equals(secondPlayPlayer)) {
-            PlayDTO play = PlayDTOBuilder.build(firstPlay, secondPlay);
+            FrameDTO play = FrameDTOBuilder.build(firstPlay, secondPlay);
             updatePlay(firstPlay);
             updatePlay(secondPlay);
             return play;
@@ -71,13 +71,13 @@ public class FrameService {
         }
     }
 
-    private PlayDTO processPlay(PlayOutput firstPlay, PlayOutput secondPlay, PlayOutput thirdPlay) {
+    private FrameDTO processPlay(PlayOutput firstPlay, PlayOutput secondPlay, PlayOutput thirdPlay) {
         String firstPlayPlayer = firstPlay.getPlayerName();
         String secondPlayPlayer = secondPlay.getPlayerName();
         String thirdPlayPlayer = thirdPlay.getPlayerName();
 
         if (firstPlayPlayer.equals(secondPlayPlayer) && secondPlayPlayer.equals(thirdPlayPlayer)) {
-            PlayDTO play = PlayDTOBuilder.build(firstPlay, secondPlay, thirdPlay);
+            FrameDTO play = FrameDTOBuilder.build(firstPlay, secondPlay, thirdPlay);
             updatePlay(firstPlay);
             updatePlay(secondPlay);
             updatePlay(thirdPlay);
@@ -87,10 +87,10 @@ public class FrameService {
         }
     }
 
-    private Boolean enhanceFramesWithPlays(Map<Integer, List<PlayDTO>> frames,
+    private Boolean enhanceFramesWithPlays(Map<Integer, List<FrameDTO>> frames,
                                            Integer frame,
                                            List<? extends PlayOutput> playOutputs,
-                                           List<PlayDTO> plays) {
+                                           List<FrameDTO> plays) {
         Boolean isFrameComplete = isFrameComplete(playOutputs, plays);
 
         if (isFrameComplete) {
@@ -100,13 +100,13 @@ public class FrameService {
         return isFrameComplete;
     }
 
-    private Boolean isFrameComplete(List<? extends PlayOutput> playOutputs, List<PlayDTO> plays) {
+    private Boolean isFrameComplete(List<? extends PlayOutput> playOutputs, List<FrameDTO> plays) {
         List<String> playersNames = playOutputs.stream()
                 .map(PlayOutput::getPlayerName)
                 .distinct()
                 .collect(Collectors.toList());
 
-        List<String> names = plays.stream().map(PlayDTO::getPlayerName).distinct().collect(Collectors.toList());
+        List<String> names = plays.stream().map(FrameDTO::getPlayerName).distinct().collect(Collectors.toList());
         return new HashSet<>(names).containsAll(playersNames);
     }
 
