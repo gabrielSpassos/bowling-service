@@ -7,7 +7,6 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static com.gabrielspassos.poc.config.BowlingConfig.MAX_SCORE_VALUE;
 import static com.gabrielspassos.poc.config.BowlingConfig.MIN_SCORE_VALUE;
 
 @Service
@@ -16,8 +15,8 @@ public class BowlingService {
     public void calculateFramesScore(Map<Integer, List<FrameDTO>> framesMap) {
         for (int i = 1; i <= framesMap.size(); i++) {
             List<FrameDTO> currentFrames = framesMap.get(i);
-            List<FrameDTO> playersWithStrike = getFramesWithSpecialFrame(currentFrames, isStrike());
-            List<FrameDTO> playersWithSpare = getFramesWithSpecialFrame(currentFrames, isSpare().and(isStrike().negate()));
+            List<FrameDTO> playersWithStrike = getFramesWithSpecialFrame(currentFrames, FrameDTO::isStrikeFrame);
+            List<FrameDTO> playersWithSpare = getFramesWithSpecialFrame(currentFrames, FrameDTO::isSpareFrame);
 
             if (!playersWithStrike.isEmpty()) {
                 calculateStrikeFrame(playersWithStrike, framesMap, i);
@@ -88,17 +87,8 @@ public class BowlingService {
                 .collect(Collectors.toList());
     }
 
-    private Predicate<FrameDTO> isStrike() {
-        return frame -> MAX_SCORE_VALUE.equals(frame.getFirstScore())
-                || MAX_SCORE_VALUE.equals(frame.getSecondScore())
-                || MAX_SCORE_VALUE.equals(frame.getThirdScore());
-    }
-
     private Predicate<FrameDTO> isSpare() {
-        return frame -> {
-            Integer sumOfScores = frame.sumScores();
-            return MAX_SCORE_VALUE.equals(sumOfScores);
-        };
+        return FrameDTO::isSpareFrame;
     }
 
     private Predicate<FrameDTO> playerIsNotAtList(List<FrameDTO> frames) {

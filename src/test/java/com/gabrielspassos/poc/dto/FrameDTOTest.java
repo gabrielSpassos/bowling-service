@@ -6,7 +6,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class FrameDTOTest {
@@ -60,5 +60,85 @@ class FrameDTOTest {
         assertEquals(14, score2);
         assertEquals(30, score3);
         assertEquals(0, score4);
+    }
+
+    @Test
+    void shouldReturnIsStrikeFrameAsTrue() {
+        FrameDTO frameDTO1 = new FrameDTO("john", 10, null, null, null);
+        FrameDTO frameDTO2 = new FrameDTO("john", 1, 10, null, null);
+        FrameDTO frameDTO3 = new FrameDTO("john", 1, 2, 10, null);
+
+        assertTrue(frameDTO1.isStrikeFrame());
+        assertTrue(frameDTO2.isStrikeFrame());
+        assertTrue(frameDTO3.isStrikeFrame());
+    }
+
+    @Test
+    void shouldReturnIsStrikeFrameAsFalse() {
+        FrameDTO frameDTO1 = new FrameDTO("john", null, null, null, null);
+
+        assertFalse(frameDTO1.isStrikeFrame());
+    }
+
+    @Test
+    void shouldReturnIsSpareFrameAsTrue() {
+        FrameDTO frameDTO1 = new FrameDTO("john", 9, 1, null, null);
+        FrameDTO frameDTO2 = new FrameDTO("john", 2, 8, null, null);
+        FrameDTO frameDTO3 = new FrameDTO("john", 1, 2, 7, null);
+
+        assertTrue(frameDTO1.isSpareFrame());
+        assertTrue(frameDTO2.isSpareFrame());
+        assertTrue(frameDTO3.isSpareFrame());
+    }
+
+    @Test
+    void shouldReturnIsSpareFrameAsFalse() {
+        FrameDTO frameDTO1 = new FrameDTO("john", 10, null, null, null);
+        FrameDTO frameDTO2 = new FrameDTO("john", 2, 3, 4, null);
+
+        assertFalse(frameDTO1.isSpareFrame());
+        assertFalse(frameDTO2.isSpareFrame());
+    }
+
+    @Test
+    void shouldReturnIsStrikeScoreAsTrue() {
+        FrameDTO frameDTO1 = new FrameDTO("john", 10, null, null, null);
+
+        assertTrue(frameDTO1.isStrikeScore(10));
+    }
+
+    @Test
+    void shouldReturnIsStrikeScoreAsFalse() {
+        FrameDTO frameDTO1 = new FrameDTO("john", 9, null, null, null);
+
+        assertFalse(frameDTO1.isStrikeScore(9));
+    }
+
+    @Test
+    void shouldReturnIsSecondScoreSpareAsTrue() {
+        FrameDTO frameDTO1 = new FrameDTO("john", 2, 8, null, null);
+
+        assertTrue(frameDTO1.isSecondScoreSpare());
+    }
+
+    @Test
+    void shouldReturnIsSecondScoreSpareAsFalse() {
+        FrameDTO frameDTO1 = new FrameDTO("john", 2, 7, null, null);
+
+        assertFalse(frameDTO1.isSecondScoreSpare());
+    }
+
+    @Test
+    void shouldReturnIsThirdScoreSpareAsTrue() {
+        FrameDTO frameDTO1 = new FrameDTO("john", 2, 7, 1, null);
+
+        assertTrue(frameDTO1.isThirdScoreSpare());
+    }
+
+    @Test
+    void shouldReturnIsThirdScoreSpareAsFalse() {
+        FrameDTO frameDTO1 = new FrameDTO("john", 2, 6, 1, null);
+
+        assertFalse(frameDTO1.isThirdScoreSpare());
     }
 }
