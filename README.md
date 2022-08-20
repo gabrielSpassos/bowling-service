@@ -1,4 +1,4 @@
-# Java Challenge
+# Bowling Service
 
 ## How to run
 
